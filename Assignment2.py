@@ -211,6 +211,23 @@ if text not in stop:
     plt.axis("off")
     plt.show()
 	
+filenameFollowers = "C:\\Users\\Pari\\"+search_term+"Analysis6"+".txt"
+if not os.path.exists(os.path.dirname(filenameFollowers)):
+    try:
+        os.makedirs(os.path.dirname(filenameFollowers))
+    except OSError as exc: # Guard against race condition
+        if exc.errno != errno.EEXIST:
+            raise
+with open(filenameFollowers, 'w', encoding='utf-8') as outfile: 
+    count=0
+    text = None  
+    for j in myStatuses:
+        fol = j['user']['followers_count']
+        if fav > count:
+            count = fol
+            text = j['text']
+    outfile.write(text)  
+	
 
 
 
