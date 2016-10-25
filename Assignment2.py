@@ -144,7 +144,7 @@ if not os.path.exists(os.path.dirname(filenameTime)):
             raise
 with open(filenameTime, 'w', encoding='utf-8') as outfile:
     
-    rejjhgreilbgiegbiregbi  
+    
     for j in myStatuses:
         tz = j['user']['time_zone']
         if tz == "Pacific Time (US & Canada)":
