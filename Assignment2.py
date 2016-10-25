@@ -16,6 +16,9 @@ import re
 from os import path
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+from nltk.corpus import stopwords
+from nltk.tokenize import wordpunct_tokenize
+
 
 
 
@@ -38,7 +41,7 @@ r = requests.get(url="https://api.twitter.com/1.1/search/tweets.json?q="+search_
 #print (r.json())
 myData = r.json()
 myStatuses = myData['statuses']
-
+stop = set(stopwords.words('english'))
 for items in myStatuses:
     myTexts = items['text']
     myTweets = items['retweeted']
@@ -114,7 +117,10 @@ if not os.path.exists(os.path.dirname(filenameData)):
             raise
 with open(filenameData, 'w', encoding='utf-8') as outfile: 
     for i in commonWordsInText:
-        json.dump(i, outfile)
+        #filtered_words = [word for word in i if word not in stopwords.words('english')]
+        stops = set(stopwords.words("english"))
+        if i not in stops:
+            json.dump(i, outfile)
         #outfile.write(i)
 		
 filenameDataRetweet = "C:\\Users\\Pari\\"+search_term+"Analysis2"+".txt"
@@ -132,7 +138,8 @@ with open(filenameDataRetweet, 'w',encoding='utf-8') as outfile:
         if myTweets > count:
             count = myTweets
             text = j['text']
-    # json.dump(text.encode('utf-8'), outfile)
+            
+    
     outfile.write(text)
     
 filenameTime = "C:\\Users\\Pari\\"+search_term+"Analysis3"+".txt"
@@ -170,7 +177,7 @@ with open(filenameSenti, 'w') as outfile:
     
 
     
-filenameTime = "C:\\Users\\Pari\\"+search_term+"Analysis4"+".txt"
+filenameTime = "C:\\Users\\Pari\\"+search_term+"Analysis5"+".txt"
 if not os.path.exists(os.path.dirname(filenameTime)):
     try:
         os.makedirs(os.path.dirname(filenameTime))
@@ -185,7 +192,25 @@ with open(filenameTime, 'w', encoding='utf-8') as outfile:
         if fav > count:
             count = fav
             text = j['text']
-    outfile.write(text)    
+    outfile.write(text)  
+
+
+text = open(filename,'r', encoding='utf-8').read()
+stop = set(stopwords.words('english'))
+
+if text not in stop:
+    wordcloud = WordCloud().generate(text)
+
+    plt.imshow(wordcloud)
+    plt.axis("off")
+
+# lower max_font_size
+    wordcloud = WordCloud(max_font_size=40).generate(text)
+    plt.figure()
+    plt.imshow(wordcloud)
+    plt.axis("off")
+    plt.show()
+	
 
 
 
