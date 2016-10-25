@@ -168,8 +168,24 @@ with open(filenameSenti, 'w') as outfile:
     json.dump(senti, outfile)
     
     
-    
 
+    
+filenameTime = "C:\\Users\\Pari\\"+search_term+"Analysis4"+".txt"
+if not os.path.exists(os.path.dirname(filenameTime)):
+    try:
+        os.makedirs(os.path.dirname(filenameTime))
+    except OSError as exc: # Guard against race condition
+        if exc.errno != errno.EEXIST:
+            raise
+with open(filenameTime, 'w', encoding='utf-8') as outfile: 
+    count=0
+    text = None  
+    for j in myStatuses:
+        fav = j['user']['favourites_count']
+        if fav > count:
+            count = fav
+            text = j['text']
+    outfile.write(text)    
 
 
 
